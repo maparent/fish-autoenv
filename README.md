@@ -1,61 +1,66 @@
-Autoenv
-=======
+# fish-autoenv
 
-#### Autoenv automatically sources (known/whitelisted) `.env.fish` and `.out.fish` files.
+An autoenv plugin for fish shell allowing excuting scripts when entering and leaving a directory
 
-This is a FISH Shell port of [horosgrisa/autoenv](https://github.com/horosgrisa/autoenv). Please go check it if you're using ZSH.
+This is a fork of `https://github.com/eknkc/fish-autoenv`. With following changes being made:
 
-This plugin support for enter and leave events. By default `.env.fish` is used for entering, and `.out.fish` for leaving.
-
-## Example of use
-
-- If you are in the directory `/home/user/dir1` and execute `cd /var/www/myproject` this plugin will source following files if they exist
-```
-/home/user/dir1/.out.fish
-/home/user/.out.fish
-/home/.out.fish
-/var/.env.fish
-/var/www/.env.fish
-/var/www/myproject/.env.fish
-```
-
-- If you are in the directory `/` and execute `cd /home/user/dir1` this plugin will source following files if they exist
-```
-/home/.env.fish
-/home/user/.env.fish
-/home/user/dir1/.env.fish
-```
-
-- If you are in the directory `/home/user/dir1` and execute `cd /` this plugin will source following files if they exist
-```
-/home/user/dir1/.out.fish
-/home/user/.out.fish
-/home/.out.fish
-```
-
-## Example of `.env.fish` and `.out.fish` files useful for node.js developing
-
-### .env.fish
-
-```sh
-nvm use node
-set -g OLDPATH $PATH
-set -gx PATH (pwd)/node_modules/.bin $PATH
-```
-
-### .out.fish
-```sh
-nvm use system
-set -gx PATH $OLDPATH
-```
+1. Adaption to most recent `fish`
+2. Bug fixes
+3. Tests added
 
 ## Installation
 
-Clone the repo to somewhere and just source `autoenv.fish`
+via `fisher`:
 
-```sh
-git clone https://github.com/eknkc/fish-autoenv.git
-cd fish-autoenv
-. autoenv.fish
+```shell console
+fisher add pwwang/fish-autoenv
 ```
 
+## Usage
+
+### Entry and exit points
+
+`fish-autoenv` sources `./.in.fish` (~~`./.env.fish`~~) while entering a directory and `./.out.fish` while leaving it.
+
+### Use cases
+
+- If you are in the directory `/home/user/dir1` and execute `cd /var/www/myproject` this plugin will source following files if they exist
+    ```
+    /home/user/dir1/.out.fish
+    /home/user/.out.fish
+    /home/.out.fish
+    /var/.in.fish
+    /var/www/.in.fish
+    /var/www/myproject/.in.fish
+    ```
+
+- If you are in the directory `/` and execute `cd /home/user/dir1` this plugin will source following files if they exist
+    ```
+    /home/.in.fish
+    /home/user/.in.fish
+    /home/user/dir1/.in.fish
+    ```
+
+- If you are in the directory `/home/user/dir1` and execute `cd /` this plugin will source following files if they exist
+    ```
+    /home/user/dir1/.out.fish
+    /home/user/.out.fish
+    /home/.out.fish
+    ```
+
+### Examples
+
+If you have an NLP project in `/home/user/nlp`, and you have installed all the tools needed via `conda` environment `nlp`. You probably want to automatically activate `nlp` while entering the directory and deactivate it while leaving the directory.
+
+So you `.in.fish` would simply be:
+
+```fish
+conda activate nlp
+```
+
+And you `.out.fish`:
+
+```fish
+# resume whatever previous environment is
+conda deactivate
+```
