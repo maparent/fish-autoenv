@@ -16,8 +16,12 @@ function __autoenv_exec
     if grep "$argv:$hash" "$FISH_AUTOENV_AUTH_FILE" >/dev/null ^/dev/null
         source $argv
     else
-        echo "WARNING: This is the first time you are to source:"
-        echo -n "         $argv"
+        string match -q "*.in.fish" $argv; \
+            and set -l entering_or_leaving "Entering"; \
+            or set -l entering_or_leaving "Leaving"
+        echo    "[INFO   ] $entering_or_leaving directory: "(dirname $argv)
+        echo    "[WARNING] This is the first time you are to source:"
+        echo -n "          $argv"
 
         while true
             read -l -P "Allow? [y/N] " ans

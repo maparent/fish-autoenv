@@ -16,6 +16,16 @@ via `fisher`:
 fisher add pwwang/fish-autoenv
 ```
 
+## Excution on login
+
+Due to the event loading issue before first load ([#845](https://github.com/fish-shell/fish-shell/issues/845)), `autoenv` is not able to execute on the initial PWD when logging in until you jump to some other directory after the PS shows. To solve this problem, you need to add following to your `~/.config/fish/config.fish`:
+
+```fish
+set -g __autoenv_init_pwd "" && __autoenv
+```
+
+to manually trigger it.
+
 ## Usage
 
 ### Entry and exit points

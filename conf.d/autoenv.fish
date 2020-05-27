@@ -1,4 +1,8 @@
-function _autoenv --on-variable PWD
+# get the intial PWD for the first time
+# we can't get it from $dirprev from the first jump
+set -g __autoenv_init_pwd $PWD
+
+function __autoenv --on-variable PWD --on-variable fish_pid
 
     status --is-command-substitution; and return
 
@@ -6,7 +10,7 @@ function _autoenv --on-variable PWD
         and set -g FISH_AUTOENV_AUTH_FILE "$HOME/.fish-autoenv.authorized"
 
     test "x$__autoenv_old_path" = "x"; \
-        and set -g __autoenv_old_path $HOME
+        and set -g __autoenv_old_path $__autoenv_init_pwd
 
     # we didn't enter a new directory
     test "x$__autoenv_old_path" = "x$PWD"; and return

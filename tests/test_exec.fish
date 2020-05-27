@@ -12,7 +12,7 @@ end
     echo "echo Something" > $testfile
     set -l out (__autoenv_exec $testfile < (echo y | psub))
     set out (string join "" $out)
-    string match -q "WARNING: *Something" $out
+    string match -q "[INFO   ] *[WARNING] *Something" $out
 ) $status -eq 0
 
 @test "exec: auth'ed file" (
