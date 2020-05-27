@@ -5,8 +5,8 @@ before_install:
     - sudo apt-get -y install fish
 script:
     - curl git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-    - fisher add jorgebucaran/fishtape
-    - fisher add .
-    - fishtape tests/test_exec.fish
+    - fish -c 'fisher add jorgebucaran/fishtape'
+    - fish -c 'fisher add .'
+    - fish -c 'fishtape tests/test_exec.fish'
     - fish tests/test_autoenv.fish
 
