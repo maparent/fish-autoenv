@@ -7,13 +7,13 @@ function __autoenv_exec
         and set -g FISH_AUTOENV_AUTH_FILE "$HOME/.fish-autoenv.authorized"
 
     set shasum_bin
-    which shasum >/dev/null ^/dev/null; \
+    which shasum  2>&1 >/dev/null \
         and set shasum_bin shasum; \
         or set shasum_bin sha1sum
 
     set hash (command $shasum_bin $argv | cut -d' ' -f1)
 
-    if grep "$argv:$hash" "$FISH_AUTOENV_AUTH_FILE" >/dev/null ^/dev/null
+    if grep "$argv:$hash" "$FISH_AUTOENV_AUTH_FILE" 2>&1 >/dev/null
         source $argv
     else
         string match -q "*.in.fish" $argv; \
